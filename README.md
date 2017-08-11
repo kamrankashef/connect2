@@ -12,7 +12,7 @@ A simple way to use aliased hosts and ports to:
 ```
 $ curl -O https://raw.githubusercontent.com/kamrankashef/connect2/master/connect2 
 $ chmod +x connect2 
-$ ./connect_to -h
+$ ./connect2 -h
 Usage: connect2 [options]
     -c, --command [command_to_run]   command
     -t, --scp                        Transfer file (SCP)
@@ -28,7 +28,7 @@ Usage: connect2 [options]
 ```
 
 ### Configure Aliases
-Create `~/.connect_to` and specify remote hosts following this example:
+Create `~/.connect2` and specify remote hosts following this example:
 ```
 {
  :machines => [
