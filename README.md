@@ -17,14 +17,15 @@ Usage: connect2 [options]
     -h, --help                       Show this message
 ```
 
-Create ~/.connect_to and specify remote hosts following this example:
-
+Create `~/.connect_to` and specify remote hosts following this example:
+```
 {
  :machines => [
  {:alias => "aws_ubuntu1", :host=>"ubuntu-user@50.1.10.115", :port=>"1507"},
  {:alias => "webserver", :host=>"admin@10.1.10.115", :port=>22}
  ]
 }
+```
 
 Example usage:
 
@@ -44,8 +45,8 @@ ubuntu-user@webserver:~
 
 Remote execute `ls` on aws_ubuntu1 and webserver
 
-$ ./connect2 -m aws_ubuntu1:webserver -c ls
 ```
+$ ./connect2 -m aws_ubuntu1:webserver -c ls
 Runnig ssh ubuntu-user@50.1.10.115 -p 1507 'source .bashrc; ls' 
 bin
 opt
@@ -57,7 +58,7 @@ tmp
 
 Running a local script remotely
 
-Create sample.sh script to get the remote server's date and `ls /tmp`:
+Create `sample.sh` script to get the remote server's date and `ls /tmp`:
 
 ```
 $ echo "date
