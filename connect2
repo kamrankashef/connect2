@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 
-# A bit messy... allows (clean up to come)
+# A bit messy... allows (clean up to come), choose better var.
 # 1 - Connect to a remote machine (SINGLE machine)
 # 2 - SCP files to/from a set of machines (MULTIPLE machines)
 # 3 - Run in line command on a set of machines (MULTIPLE machines)
@@ -10,11 +10,6 @@ require 'optparse'
 require 'pp'
 
 
-# Sent of aliased machines being addressed
-end_points = ARGV[0] ? ARGV[0].split(":") : nil
-
-# The command to be executed remotely
-command = ARGV[1]
 
 @config_path = ENV["HOME"] + "/.connect2"
 
@@ -23,22 +18,22 @@ def escape_quotes(str)
 end
 
 def run_command cmd
-   puts "Calling #{cmd}"
    process = IO.popen(cmd)
    process.sync = true
    process.each { |s| print s }
 end
 
-def write_config machines
-    machines_as_str = PP.pp(machines, '')
-    File.open(@config_path, 'w') { |file| file.write(machines_as_str) }
+def write_config config
+    config_as_str = PP.pp(config, '')
+    File.open(@config_path, 'w') { |file| file.write(config_as_str) }
 end
 
 if !File.file?(@config_path) then
     write_config({})
 end
    
-@machines = eval(File.read(@config_path))
+@config = eval(File.read(@config_path))
+@machines = @config[:machines]
 
 def help
      @machines.each do |key, value|
@@ -46,15 +41,13 @@ def help
      end
 end
 
-unless end_points then
-        STDERR.put "No hosts specified"
-	help
-	exit
-end
 
 options = {}
 op = OptionParser.new do |opts|
-   opts.on("-c", "--scp", "scp") do | scp |
+   opts.on("-c", "--command [command_to_run]", "command") do | command |
+     options[:command] = command
+   end
+   opts.on("-t", "--scp", "Transfer file (SCP)") do | scp |
      options[:scp] = scp
    end
    opts.on("-r", "--recursive", "SCP recursive") do | arg |
@@ -73,6 +66,9 @@ op = OptionParser.new do |opts|
 	            "Script to execute remotely") do | script |
 	             options[:script] = script
    end
+   opts.on("-m", "--machines [':' sperated list machine aliases]", "Machine aliases to connect to") do | arg |
+     options[:aliases] = arg
+   end
 
    opts.on_tail("-h", "--help", "Show this message") do
      puts "End points are\n"
@@ -82,10 +78,38 @@ op = OptionParser.new do |opts|
   end
 end.parse!
 
+ARGV.clear
+
+# Sent of aliased machines being addressed
+end_points = options[:aliases] ? options[:aliases] .split(":") : nil
+
+if end_points then
+        selected_machines = @machines.select { | machine | end_points.index(machine[:alias]) }
+        if selected_machines.empty? then
+            puts "Unknown hosts #{end_points}, exiting."
+            exit
+        end
+else
+        puts "No end point specified"
+	@machines.each_with_index { | machine, index | 
+           STDOUT.puts "[#{index}] #{machine[:alias]} => #{machine[:host]}:#{machine[:port]}"
+        }
+        print "Select your host(s): "
+        selection_indexes = gets.chop.split(/[^\d+]/).reject { |s| s.empty? }.collect { | str | str.to_i }.sort
+        if selection_indexes.empty? then
+             puts "None selected, exiting."
+             exit
+        # Validate selected indices
+        elsif selection_indexes.min < 0 or selection_indexes.max > @machines.size then
+             puts "Invalid selection, exiting."
+             exit
+        end 
+        selected_machines = @machines.values_at(*selection_indexes)
+end
+
 if options[:scp] then
    # Transfer file to/from remote machine
-   end_points.each do | end_point |
-     connect_to = @machines[end_point]
+   selected_machines.each do | connect_to |
      puts "host: #{connect_to[:host]}"
      puts "Top of scp"
      recurive_opt = options[:r] ? " -r" : ""
@@ -103,22 +127,16 @@ if options[:scp] then
      puts "Running #{command}"
      run_command(command)
    end
-elsif !command then
+elsif !options[:command] then
    # Connect to machine
-   connect_to = @machines[end_points[0]]
-   unless connect_to then
-     puts "Could not locate #{end_points[0]}"
-     help()
-     exit
-   end
+   connect_to = selected_machines[0]
    puts "Connection to #{connect_to[:host]}"
    command = "ssh #{connect_to[:host]} -p #{connect_to[:port]}"
    puts "Running: #{command}"
    exec(command)
 elsif options[:script] then
-   end_points.each do | machine |
-      connect_to = @machines[machine] 
-      puts " X Running script #{options[:script]} on #{machine}"
+   selected_machines.each do | connect_to |
+      puts "Running script #{options[:script]} on #{machine}"
       File.readlines(options[:script]).each do | line |
         if !line.empty? then
 command=<<mark
@@ -131,9 +149,8 @@ mark
 
 else
    # Run command remotely
-   end_points.each do | end_point |
-     connect_to = @machines[end_point]
-     cmd = "ssh #{connect_to[:host]} -p #{connect_to[:port]} 'source .bashrc; #{command}' "
+   selected_machines.each do | connect_to |
+     cmd = "ssh #{connect_to[:host]} -p #{connect_to[:port]} 'source .bashrc; #{options[:command]}' "
      puts "Runnig #{cmd}"
      run_command(cmd)
    end
