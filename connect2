@@ -83,10 +83,10 @@ if end_points then
 else
         puts "No end point specified"
 	@machines.each_with_index { | machine, index | 
-           STDOUT.puts "[#{index}] #{machine[:alias]} => #{machine[:host]}:#{machine[:port]}"
+           STDOUT.puts "[#{index + 1}] #{machine[:alias]} => #{machine[:host]}:#{machine[:port]}"
         }
         print "Select your host(s): "
-        selection_indexes = gets.chop.split(/[^\d+]/).reject { |s| s.empty? }.collect { | str | str.to_i }.sort
+        selection_indexes = gets.chop.split(/[^\d+]/).reject { |s| s.empty? }.collect { | str | str.to_i - 1}.sort
         if selection_indexes.empty? then
              puts "None selected, exiting."
              exit
@@ -101,8 +101,6 @@ end
 if options[:scp] then
    # Transfer file to/from remote machine
    selected_machines.each do | connect_to |
-     puts "host: #{connect_to[:host]}"
-     puts "Top of scp"
      recurive_opt = options[:r] ? " -r" : ""
      remote = "#{connect_to[:host]}:\"#{options[:remotepath]}\""
      command = nil
@@ -115,12 +113,12 @@ if options[:scp] then
         puts "Missing or invalid scp action"
         exit
      end
-     puts "Running #{command}"
+     puts "Running: #{command}"
      run_command(command)
    end
 elsif options[:script] then
    selected_machines.each do | connect_to |
-      puts "Running script #{options[:script]} on #{connect_to[:alias]}"
+      puts "Running script '#{options[:script]}' on #{connect_to[:alias]}"
       File.readlines(options[:script]).each do | line |
         if !line.empty? then
 command=<<mark
@@ -142,7 +140,7 @@ else
    # Run command remotely
    selected_machines.each do | connect_to |
      cmd = "ssh #{connect_to[:host]} -p #{connect_to[:port]} 'source .bashrc; #{options[:command]}' "
-     puts "Runnig #{cmd}"
+     puts "Running #{cmd}"
      run_command(cmd)
    end
 end
