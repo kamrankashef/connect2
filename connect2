@@ -72,7 +72,7 @@ end.parse!
 ARGV.clear
 
 # Sent of aliased machines being addressed
-end_points = options[:aliases] ? options[:aliases] .split(":") : nil
+end_points = options[:aliases] ? options[:aliases].split(":") : nil
 
 if end_points then
         selected_machines = @machines.select { | machine | end_points.index(machine[:alias]) }
