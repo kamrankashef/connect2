@@ -35,13 +35,6 @@ end
 @config = eval(File.read(@config_path))
 @machines = @config[:machines]
 
-def help
-     @machines.each do |key, value|
-       puts "#{key} => ssh #{value[:host]} -p #{value[:port]}"
-     end
-end
-
-
 options = {}
 op = OptionParser.new do |opts|
    opts.on("-c", "--command [command_to_run]", "command") do | command |
@@ -71,8 +64,6 @@ op = OptionParser.new do |opts|
    end
 
    opts.on_tail("-h", "--help", "Show this message") do
-     puts "End points are\n"
-     help
      puts opts
      exit			 
   end
@@ -127,16 +118,9 @@ if options[:scp] then
      puts "Running #{command}"
      run_command(command)
    end
-elsif !options[:command] then
-   # Connect to machine
-   connect_to = selected_machines[0]
-   puts "Connection to #{connect_to[:host]}"
-   command = "ssh #{connect_to[:host]} -p #{connect_to[:port]}"
-   puts "Running: #{command}"
-   exec(command)
 elsif options[:script] then
    selected_machines.each do | connect_to |
-      puts "Running script #{options[:script]} on #{machine}"
+      puts "Running script #{options[:script]} on #{connect_to[:alias]}"
       File.readlines(options[:script]).each do | line |
         if !line.empty? then
 command=<<mark
@@ -146,6 +130,13 @@ mark
 	end
       end
    end
+elsif !options[:command] then
+   # Connect to machine
+   connect_to = selected_machines[0]
+   puts "Connection to #{connect_to[:host]}"
+   command = "ssh #{connect_to[:host]} -p #{connect_to[:port]}"
+   puts "Running: #{command}"
+   exec(command)
 
 else
    # Run command remotely
