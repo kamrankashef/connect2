@@ -3,9 +3,9 @@
 A simple way to use aliased hosts and ports to:
 
 - [ssh](#ssh-into-a-host)
-- [scp](#scp-file)
-- [Execute an inlined command on multiple servers](#Remote-execute-a-command)
-- [Execute a local script on multiple servers](#Run-a-local-script-remotely)
+- [scp](#scp-a-file)
+- [Execute an inlined command on multiple servers](#remote-execute-a-command)
+- [Execute a local script on multiple servers](#run-a-local-script-remotely)
 
 
 ### Installation and Usage
