@@ -1,4 +1,6 @@
 # connect2
+
+```
 Usage: connect_to [options]
     -c, --scp                        scp
     -r, --recursive                  SCP recursive
@@ -8,3 +10,4 @@ Usage: connect_to [options]
     -p [scipt_path],                 Script to execute remotely
         --path_to_script
     -h, --help                       Show this message
+```
