@@ -1,8 +1,18 @@
 # connect2
 
-A simple way to scp, ssh into and remote execute command over ssh.
+A simple way to use aliased hosts and ports to:
 
+- [ssh](#ssh-into-a-host)
+- [scp](#scp-a-file)
+- [Execute an inlined command on multiple servers](#remote-execute-a-command)
+- [Execute a local script on multiple servers](#run-a-local-script-remotely)
+
+
+### Installation and Usage
 ```
+$ curl -O https://raw.githubusercontent.com/kamrankashef/connect2/master/connect2 
+$ chmod +x connect2 
+$ ./connect_to -h
 Usage: connect2 [options]
     -c, --command [command_to_run]   command
     -t, --scp                        Transfer file (SCP)
@@ -17,6 +27,7 @@ Usage: connect2 [options]
     -h, --help                       Show this message
 ```
 
+### Configure Aliases
 Create `~/.connect_to` and specify remote hosts following this example:
 ```
 {
@@ -27,9 +38,9 @@ Create `~/.connect_to` and specify remote hosts following this example:
 }
 ```
 
-Example usage:
+### Example Usage
 
-ssh into the webserver
+#### ssh into a host
 
 ```
 $ ./connect2 
@@ -43,7 +54,23 @@ Welcome to Ubuntu 17.04 (GNU/Linux 4.10.0-21-generic x86_64)
 ubuntu-user@webserver:~
 ```
 
-Remote execute `ls` on aws_ubuntu1 and webserver
+#### scp a file
+scp file (use `-r` for recursive copies):
+```
+$ ./connect2 -t -a post -m aws_ubuntu1 -l my_file.txt -s /tmp
+Running: scp -P 1507 "my_file.txt" ubuntu-user@50.1.10.115:"/tmp"
+```
+
+Validate it was copied using `connect2`:
+```
+$ ./connect2  -m aws_ubuntu1 -c "ls -l /tmp/my_file.txt"
+Runnig ssh ubuntu-user@50.1.10.115 -p 1507 'source .bashrc; ls -l /tmp/my_file.txt'
+-rwxr-xr-x 1 ubuntu-user ubuntu-user 4603 Aug 11 15:59 /tmp/my_file.txt
+```
+
+#### Remote execute a command
+
+Execute `ls` on aws_ubuntu1 and webserver
 
 ```
 $ ./connect2 -m aws_ubuntu1:webserver -c ls
@@ -56,7 +83,7 @@ bin
 tmp
 ```
 
-Running a local script remotely
+#### Run a local script remotely
 
 Create `sample.sh` script to get the remote server's date and `ls /tmp`:
 
@@ -67,7 +94,7 @@ $ echo "date
 $ ./connect2 -m aws_ubuntu1 -p /tmp/sample.sh 
 Running script /tmp/sample.sh on aws_ubuntu1
 Fri Aug 11 15:32:22 EDT 2017
-cap_friendly.log.log
+catalina.out
 foo
 hsperfdata_root
 hsperfdata_ubuntu-user
