@@ -2,7 +2,11 @@
 
 A simple way to scp, ssh into and remote execute command over ssh.
 
+### Installation and Usage
 ```
+$ curl -O https://raw.githubusercontent.com/kamrankashef/connect2/master/connect2 
+$ chmod +x connect2 
+$ ./connect_to -h
 Usage: connect2 [options]
     -c, --command [command_to_run]   command
     -t, --scp                        Transfer file (SCP)
@@ -17,6 +21,7 @@ Usage: connect2 [options]
     -h, --help                       Show this message
 ```
 
+### Configure Aliases
 Create `~/.connect_to` and specify remote hosts following this example:
 ```
 {
@@ -27,7 +32,7 @@ Create `~/.connect_to` and specify remote hosts following this example:
 }
 ```
 
-Example usage:
+### Example Usage
 
 ssh into the webserver
 
@@ -67,7 +72,7 @@ $ echo "date
 $ ./connect2 -m aws_ubuntu1 -p /tmp/sample.sh 
 Running script /tmp/sample.sh on aws_ubuntu1
 Fri Aug 11 15:32:22 EDT 2017
-cap_friendly.log.log
+catalina.out
 foo
 hsperfdata_root
 hsperfdata_ubuntu-user
