@@ -34,7 +34,7 @@ Create `~/.connect_to` and specify remote hosts following this example:
 
 ### Example Usage
 
-ssh into the webserver
+#### ssh into the webserver
 
 ```
 $ ./connect2 
@@ -48,7 +48,7 @@ Welcome to Ubuntu 17.04 (GNU/Linux 4.10.0-21-generic x86_64)
 ubuntu-user@webserver:~
 ```
 
-Remote execute `ls` on aws_ubuntu1 and webserver
+#### Remote execute `ls` on aws_ubuntu1 and webserver
 
 ```
 $ ./connect2 -m aws_ubuntu1:webserver -c ls
@@ -61,7 +61,7 @@ bin
 tmp
 ```
 
-Running a local script remotely
+#### Running a local script remotely
 
 Create `sample.sh` script to get the remote server's date and `ls /tmp`:
 
@@ -79,4 +79,18 @@ hsperfdata_ubuntu-user
 master.log
 23igane.log
 systemd-private-ff7d61c228b28a6097b7a172-systemd-resolved.service-kHttp
+```
+
+#### scp a file to remote server
+scp file (use `-r` for recursive copies):
+```
+$ ./connect2 -t -a post -m aws_ubuntu1 -l my_file.txt -s /tmp
+Running: scp -P 1507 "my_file.txt" ubuntu-user@50.1.10.115:"/tmp"
+```
+
+Validate it was copied using `connect2`:
+```
+$ ./connect2  -m aws_ubuntu1 -c "ls -l /tmp/my_file.txt"
+Runnig ssh ubuntu-user@50.1.10.115 -p 1507 'source .bashrc; ls -l /tmp/my_file.txt'
+-rwxr-xr-x 1 ubuntu-user ubuntu-user 4603 Aug 11 15:59 /tmp/my_file.txt
 ```
