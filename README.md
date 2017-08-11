@@ -45,8 +45,8 @@ Create `~/.connect_to` and specify remote hosts following this example:
 ```
 $ ./connect2 
 No end point specified
-[0] aws_ubuntu1 => ubuntu-user@50.1.10.115:1507
-[1] webserver => admin@10.1.10.115:22
+[1] aws_ubuntu1 => ubuntu-user@50.1.10.115:1507
+[2] webserver => admin@10.1.10.115:22
 Select your host(s): 1
 Connection to ubuntu-user@10.1.10.115
 Running: ssh ubuntu-user@10.1.10.115 -p 1507
