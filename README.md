@@ -1,6 +1,12 @@
 # connect2
 
-A simple way to scp, ssh into and remote execute command over ssh.
+A simple way to use aliased hosts and ports to:
+
+- [ssh](#ssh-into-a-host)
+- scp
+- execute an inlined command on multiple servers
+- execute a local script on multiple servers
+
 
 ### Installation and Usage
 ```
@@ -34,7 +40,7 @@ Create `~/.connect_to` and specify remote hosts following this example:
 
 ### Example Usage
 
-#### ssh into the webserver
+#### ssh into a host
 
 ```
 $ ./connect2 
