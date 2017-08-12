@@ -1,6 +1,18 @@
 # connect2
 
-A simple way to use aliased hosts and ports to:
+A simple script to use aliased host names and ports to login, copy files and execute commands remotely in batch.
+
+E.g. 
+
+Instead of remembering the username, host and port of a instance:
+
+`ssh ubuntu-user@ec2-somelong-host-that-will-prob-change.com -P 1000`
+
+Simply call:
+
+`./connect2 dev-machine`
+
+Similarly, you can copy files, quickly execute commands and scripts remotely.  Configuration is easy and can be done interactively.
 
 - [Installation](#installation)
 - [Configure Aliases](#configure-aliases)
