@@ -212,7 +212,6 @@ elsif !options[:command] then
   command = "ssh #{connect_to[:host]} -p #{connect_to[:port]}"
   puts "Running: #{command}"
   exec(command)
-
 else
   # Run command remotely
   selected_machines.each do | connect_to |
