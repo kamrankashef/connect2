@@ -1,11 +1,16 @@
 #!/usr/bin/ruby
 
+# Author: Kamran Kashef
+# URL: https://github.com/kamrankashef/connect2
+# 
 # Allows:
 #   1 - Connect to a remote machine (SINGLE machine)
 #   2 - SCP files to/from a set of machines (MULTIPLE machines)
 #   3 - Run in line command on a set of machines (MULTIPLE machines)
 #   4 - Run script on a set of machines (MULTIPLE machines)
-#  5 - Interactive configuration
+#   5 - Interactive configuration
+#   
+#  For help run: ./connect2 -h
 
 require 'optparse'
 require 'pp'
