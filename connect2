@@ -1,10 +1,11 @@
 #!/usr/bin/ruby
 
-# A bit messy... allows (clean up to come), choose better var.
-# 1 - Connect to a remote machine (SINGLE machine)
-# 2 - SCP files to/from a set of machines (MULTIPLE machines)
-# 3 - Run in line command on a set of machines (MULTIPLE machines)
-# 4 - Run script on a set of machines (MULTIPLE machines)
+# Allows:
+#   1 - Connect to a remote machine (SINGLE machine)
+#   2 - SCP files to/from a set of machines (MULTIPLE machines)
+#   3 - Run in line command on a set of machines (MULTIPLE machines)
+#   4 - Run script on a set of machines (MULTIPLE machines)
+#  5 - Interactive configuration
 
 require 'optparse'
 require 'pp'
@@ -156,6 +157,7 @@ ARGV.clear
 # Sent of aliased machines being addressed
 end_points = options[:aliases] ? options[:aliases].split(":") : nil
 
+# If none provided, prompt for machines to connect to
 if end_points then
   selected_machines = @machines.select { | machine | end_points.index(machine[:alias]) }
   if selected_machines.empty? then
@@ -186,6 +188,7 @@ if options[:scp] then
     run_command(command)
   end
 elsif options[:script] then
+  # Execute script remotely
   selected_machines.each do | connect_to |
     puts "Running script '#{options[:script]}' on #{connect_to[:alias]}"
     File.readlines(options[:script]).each do | line |
