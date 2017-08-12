@@ -22,20 +22,22 @@ def run_command cmd
 end
 
 def write_config config
-  config_as_str = PP.pp(config, '')
+  config_as_str = PP.pp(config, '', 80)
   File.open(@config_path, 'w') { |file| file.write(config_as_str) }
+  source_config()
 end
 
-if !File.file?(@config_path) then
-  write_config({})
-end
-   
 def source_config
   @config = eval(File.read(@config_path))
   @machines = @config[:machines]
 end
 
-source_config()
+def add_alias (aliaz, user_name, host, port)
+  entry = {:alias => aliaz, :host => "#{user_name}@#{host}", :port => port}
+  @config[:machines] << entry
+  write_config(@config)
+  return entry
+end
 
 def prompt_for_machines
   @machines.each_with_index { | machine, index | 
@@ -43,19 +45,47 @@ def prompt_for_machines
   }
   while true do
     print "Select your host(s): "
-    selection_indexes = gets.chop.split(/[^\d+]/).reject { |s| s.empty? }.collect { | str | str.to_i - 1}.sort
-    if selection_indexes.empty? then
-      puts "None selected, exiting."
-      continue
-      # Validate selected indices
-    elsif selection_indexes.min < 0 or selection_indexes.max > @machines.size then
-      puts "Invalid selection, exiting."
-      continue
+    user_input = gets.chop
+    selection_indexes = user_input.split(/[^\d+]/).reject { |s| s.empty? }.collect { | str | str.to_i - 1}.sort
+    if user_input.empty? then
+      next
+    elsif selection_indexes.empty? or selection_indexes.min < 0 or selection_indexes.max > @machines.size then
+      puts "Invalid selection."
+      next
     end 
     return @machines.values_at(*selection_indexes)
   end
 end
 
+def prompt_to_add
+  print "Alias Name: "
+  aliaz = gets.chop
+  print "User Name: "
+  user_name = gets.chop
+  print "Host: "
+  host = gets.chop
+  print "Port: "
+  port = gets.chop
+  if @config[:machines].any? { | machine | machine[:alias] === aliaz } then
+    STDERR.puts "Error: Duplicate alias '#{aliaz}'."
+  else
+    entry = add_alias(aliaz, user_name, host, port)
+    puts "Added: #{entry}"
+  end
+end
+
+
+if !File.file?(@config_path) then
+  write_config({:machines => []})
+end
+   
+source_config()
+
+if @machines.empty? then
+  puts "No config found, create new machine alias"
+  prompt_to_add
+  exit
+end
 
 options = {}
 op = OptionParser.new do |opts|
@@ -88,20 +118,22 @@ op = OptionParser.new do |opts|
   opts.on("--configure", "Configure host aliases") do | arg |
     ARGV.clear
     while true do 
-      puts "Add, delete or quit entry? [a,d,q]"
+      print "Add, delete or quit entry? [a,d,q]: "
       operation = gets.chop
       case operation[0]
       when 'a'
+        prompt_to_add
       when 'd'
         selected = prompt_for_machines
-        puts "Selected are #{selected}"
+        puts "Deleting:"
+        pp selected
         @config[:machines].delete_if { | elem |
           selected.any? { | s | elem[:alias] === s[:alias] }
         }
+        write_config(@config)
       when 'q'
         exit
       end
-      write_config(@config)
     end
     exit
   end
