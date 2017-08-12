@@ -12,7 +12,7 @@ Simply call:
 
 `./connect2 dev-machine`
 
-Similarly, you can copy files, quickly execute commands and scripts remotely.  Configuration is easy and can be done interactively.
+Similarly, you can copy files, and quickly run inline-commands or local scripts remotely.  Configuration is easy and can be done interactively.
 
 - [Installation](#installation)
 - [Configure Aliases](#configure-aliases)
