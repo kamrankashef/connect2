@@ -2,18 +2,7 @@
 
 A simple script to use aliased host names and ports to login, copy files and execute commands remotely in batch.
 
-E.g. 
-
-Instead of remembering the username, host and port of a instance:
-
-`ssh ubuntu-user@ec2-somelong-host-that-will-prob-change.com -P 1000`
-
-Simply call:
-
-`./connect2 dev-machine`
-
-Similarly, you can copy files, and quickly run inline-commands or local scripts remotely.  Configuration is easy and can be done interactively.
-
+- [Most Basic Example(#most-basic-example)
 - [Installation](#installation)
 - [Configure Aliases](#configure-aliases)
   - [Initial Configuration](#initial-configuration)
@@ -26,6 +15,17 @@ Similarly, you can copy files, and quickly run inline-commands or local scripts 
   - [Execute an inlined command on multiple servers](#remote-execute-a-command)
   - [Execute a local script on multiple servers](#run-a-local-script-remotely)
 
+### Most Basic Example
+ 
+Instead of remembering the username, host and port of a instance:
+
+`ssh ubuntu-user@ec2-somelong-host-that-will-prob-change.com -P 1000`
+
+Simply call:
+
+`./connect2 dev-machine`
+
+Similarly, you can copy files, and quickly run inline-commands or local scripts remotely.  Configuration is easy and can be done interactively.
 
 ### Installation
 ```
