@@ -15,7 +15,7 @@ A simple script to use aliased host names and ports to login, copy files and exe
   - [Execute an inlined command on multiple servers](#remote-execute-a-command)
   - [Execute a local script on multiple servers](#run-a-local-script-remotely)
 
-### Most Basic Example
+## Most Basic Example
  
 Instead of remembering the username, host and port of a instance:
 
@@ -27,7 +27,7 @@ Simply call:
 
 Similarly, you can copy files, and quickly run inline-commands or local scripts remotely.  Configuration is easy and can be done interactively.
 
-### Installation
+## Installation
 ```
 $ curl -O https://raw.githubusercontent.com/kamrankashef/connect2/master/connect2 
 $ chmod +x connect2 
@@ -46,7 +46,7 @@ Usage: connect2 [options]
     -h, --help                       Show this message
 ```
 
-### Configure Aliases
+## Configure Aliases
 
 #### Initial Configuration
 
@@ -105,7 +105,7 @@ The undelying confguration is a Ruby map stored in `~/.connect2` in this format:
    {:alias=>"local-docker", :host=>"kkashef@localhost", :port=>"4000"}]}
 ```
 
-### Example Usage
+## Example Usage
 
 #### ssh into a host
 
