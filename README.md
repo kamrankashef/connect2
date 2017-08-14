@@ -2,7 +2,7 @@
 
 A simple script to use aliased host names and ports to login, copy files and execute commands remotely in batch.
 
-- [Most Basic Example(#most-basic-example)
+- [Most Basic Example](#most-basic-example)
 - [Installation](#installation)
 - [Configure Aliases](#configure-aliases)
   - [Initial Configuration](#initial-configuration)
