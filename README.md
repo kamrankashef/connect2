@@ -50,7 +50,7 @@ Usage: connect2 [options]
 
 #### Initial Configuration
 
-If you do not have a `~/.connect2` the first time you run `connect2` you will be prompted to create an alias:
+If you do not have a `~/.connect2` config file, the first time you run `connect2` you will be prompted to create your first alias:
 
 ```
 $ ./connect2 
