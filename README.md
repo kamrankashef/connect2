@@ -1,6 +1,6 @@
 # connect2
 
-A simple script to use aliased host names and ports to login, copy files and execute commands remotely in batch.
+A simple script to use aliased host names and ports to login, copy files and execute commands remotely in batch.  Effectively an enhanced version of ssh/config functionality.
 
 - [Most Basic Example](#most-basic-example)
 - [Installation](#installation)
