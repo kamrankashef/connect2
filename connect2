@@ -35,7 +35,8 @@ end
 
 def source_config
   @config = eval(File.read(@config_path))
-  @machines = @config[:machines]
+  @machines = @config[:machines].sort_by { | entry | entry[:alias] }
+  @config[:machines] = @machines
 end
 
 def add_alias (aliaz, user_name, host, port)
