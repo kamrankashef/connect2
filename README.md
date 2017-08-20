@@ -1,19 +1,8 @@
 # connect2
 
-A simple script to use aliased host names and ports to login, copy files and execute commands remotely in batch.
+A simple script to use aliased host names and ports to login, copy files and execute commands remotely in batch.  Effectively an enhanced version of ssh/config functionality.
 
-E.g. 
-
-Instead of remembering the username, host and port of a instance:
-
-`ssh ubuntu-user@ec2-somelong-host-that-will-prob-change.com -P 1000`
-
-Simply call:
-
-`./connect2 dev-machine`
-
-Similarly, you can copy files, and quickly run inline-commands or local scripts remotely.  Configuration is easy and can be done interactively.
-
+- [Most Basic Example](#most-basic-example)
 - [Installation](#installation)
 - [Configure Aliases](#configure-aliases)
   - [Initial Configuration](#initial-configuration)
@@ -26,8 +15,19 @@ Similarly, you can copy files, and quickly run inline-commands or local scripts 
   - [Execute an inlined command on multiple servers](#remote-execute-a-command)
   - [Execute a local script on multiple servers](#run-a-local-script-remotely)
 
+## Most Basic Example
+ 
+Instead of remembering the username, host and port of a instance:
 
-### Installation
+`ssh ubuntu-user@ec2-somelong-host-that-will-prob-change.com -P 1000`
+
+Simply call:
+
+`./connect2 dev-machine`
+
+Similarly, you can copy files, and quickly run inline-commands or local scripts remotely.  Configuration is easy and can be done interactively.
+
+## Installation
 ```
 $ curl -O https://raw.githubusercontent.com/kamrankashef/connect2/master/connect2 
 $ chmod +x connect2 
@@ -46,11 +46,11 @@ Usage: connect2 [options]
     -h, --help                       Show this message
 ```
 
-### Configure Aliases
+## Configure Aliases
 
 #### Initial Configuration
 
-If you do not have a `~/.connect2` the first time you run `connect2` you will be prompted to create an alias:
+If you do not have a `~/.connect2` config file, the first time you run `connect2` you will be prompted to create your first alias:
 
 ```
 $ ./connect2 
@@ -105,7 +105,7 @@ The undelying confguration is a Ruby map stored in `~/.connect2` in this format:
    {:alias=>"local-docker", :host=>"kkashef@localhost", :port=>"4000"}]}
 ```
 
-### Example Usage
+## Example Usage
 
 #### ssh into a host
 
