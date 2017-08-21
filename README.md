@@ -23,7 +23,7 @@ Instead of remembering the username, host and port of a instance:
 
 Simply call:
 
-`./connect2 dev-machine`
+`./connect2 -m dev-machine`
 
 Similarly, you can copy files, and quickly run inline-commands or local scripts remotely.  Configuration is easy and can be done interactively.
 
